@@ -47,15 +47,15 @@ export function Search() {
     const filmsCollection = collection(db, "films");
     const querySnapshot = await getDocs(filmsCollection);
     const filmsData = querySnapshot.docs.map((doc) => doc.data());
-  
+
     let filteredFilms = filmsData;
-  
+
     if (searchType === "title") {
       filteredFilms = filmsData.filter((film) => {
         return film.title.toLowerCase().includes(searchValue.toLowerCase());
       });
     }
-  
+
     if (searchType === "director") {
       filteredFilms = filmsData.filter((film) => {
         const directors = Array.isArray(film.director)
@@ -112,77 +112,91 @@ export function Search() {
 
   return (
     <Container>
-      <Col md="6">
-        
+      <Col md="12">
         <h2>Search Films</h2>
         <form onSubmit={handleSubmit}>
-              <div>
+          <Row>
+          <Col md="3">
+              
                 <label>
-                  <input
+                <h5><input
                     type="radio"
                     value="title"
                     checked={searchType === "title"}
                     onChange={handleSearchTypeChange}
                   />
-                  Search by Title
+                  Search by Title</h5>
+                  <p><i>Search for all or part of the title - search is not case-sensitive.</i></p>
                 </label>
-              </div>
-              <div>
+              </Col>
+              <Col md="3">
                 <label>
-                  <input
-                    type="radio"
-                    value="year"
-                    checked={searchType === "year"}
-                    onChange={handleSearchTypeChange}
-                  />
-                  Search by Year
-                </label>
-              </div>
-              
-              <div>
-                <label>
-                  <input
+                  <h5><input
                     type="radio"
                     value="director"
                     checked={searchType === "director"}
                     onChange={handleSearchTypeChange}
                   />
-                  Search by Director
+                  Search by Director</h5>
+                  <p><i>Search by first, last or full Name - search is not case-sensitive.</i></p>
                 </label>
-              </div>
-              <div>
+              </Col>
+            </Row>
+            <Row>
+              <Col md="3">
                 <label>
-                  <input
+                  <h5><input
+                    type="radio"
+                    value="year"
+                    checked={searchType === "year"}
+                    onChange={handleSearchTypeChange}
+                  />
+                  Search by Year</h5>
+                  <p><i>Search for an exact year or select "between" to search between years</i></p>
+                </label>
+              </Col>
+              <Col md="3">
+                <label>
+                  <h5><input
                     type="radio"
                     value="time"
                     checked={searchType === "time"}
                     onChange={handleSearchTypeChange}
                   />
-                  Search by Time
+                  Search by Length</h5>
+                  <p><i>Search an exact Runtime or select "between" to search between two values (minutes)</i></p>
                 </label>
-              </div>
-              {searchType === "year" || searchType === "time" ? (
-                <div>
-                  <label>
-                    <input
-                      type="radio"
-                      value="exact"
-                      checked={searchOption === "exact"}
-                      onChange={handleSearchOptionChange}
-                    />
-                    Exact
-                  </label>
-                  <label>
-                    <input
-                      type="radio"
-                      value="between"
-                      checked={searchOption === "between"}
-                      onChange={handleSearchOptionChange}
-                    />
-                    Between
-                  </label>
-                </div>
-              ) : null}
+              </Col>
+            
+          </Row>
+          {searchType === "year" || searchType === "time" ? (
+            <Row>
+              <Col md="2">
+                <label>
+                  <input
+                    type="radio"
+                    value="exact"
+                    checked={searchOption === "exact"}
+                    onChange={handleSearchOptionChange}
+                  />
+                  Exact
+                </label>
+                </Col>
+                <Col md="2">
+                <label>
+                  <input
+                    type="radio"
+                    value="between"
+                    checked={searchOption === "between"}
+                    onChange={handleSearchOptionChange}
+                  />
+                  Between
+                </label>
+              </Col>
+            </Row>
+          ) : null}
+          <Row>
+            <Col md="2">
               <div>
                 <input
                   type="text"
@@ -191,7 +205,9 @@ export function Search() {
                   placeholder={`Enter ${searchType}...`}
                 />
               </div>
-              {searchOption === "between" ? (
+            </Col>
+            {searchOption === "between" ? (
+              <Col md="2">
                 <div>
                   <input
                     type="text"
@@ -200,20 +216,22 @@ export function Search() {
                     placeholder="Enter second value..."
                   />
                 </div>
-              ) : null}
-              <div>
-                <button type="submit">Search</button>
-              </div>
-              </form>
+              </Col>
+            ) : null}
+          </Row>
+          <div>
+            <button type="submit">Search</button>
+          </div>
+        </form>
 
-              {isFetched && searchPerformed && !isSearching && films.length === 0 && (
-        <p>No films found.</p>
-      )}
+        {isFetched && searchPerformed && !isSearching && films.length === 0 && (
+          <p>No films found.</p>
+        )}
 
-      {isSearching ? (
-        <p>Loading films...</p>
-      ) : (
-        searchPerformed && (
+        {isSearching ? (
+          <p>Loading films...</p>
+        ) : (
+          searchPerformed &&
           films.map((film) => (
             <div key={film.id}>
               <h3>{film.title}</h3>
@@ -227,9 +245,8 @@ export function Search() {
               </p>
             </div>
           ))
-        )
-      )}
-    </Col>
-  </Container>
-);
+        )}
+      </Col>
+    </Container>
+  );
 }
