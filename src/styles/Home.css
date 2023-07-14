@@ -1,0 +1,16 @@
+.card-image {
+    width: 100%;
+    aspect-ratio: 3/4;
+    object-fit: cover;
+    object-position: center;
+}
+.film-card{
+    position: relative;
+}
+.card-link {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
