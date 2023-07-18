@@ -13,12 +13,14 @@
 }
 
 html {
-  
+  margin: 0;
+  padding: 0;  
  
 }
 
 body {
-
+  margin: 0;
+  padding: 0;
   
   
   place-content: center;
@@ -36,7 +38,7 @@ a {
   padding: 0.25rem 1rem;
   display: grid;
   text-decoration: none;
-  color: var(--fg-color);
+  color: white;
   
   border: 1px solid var(--bd-color);
   
@@ -53,7 +55,7 @@ a::before {
   top: 0;
   bottom: 0;
   right: 0;
-  
+  color: white;
   background: var(--default-bg);
   
   z-index: -1;
@@ -68,6 +70,7 @@ a.wave-link {
   position: relative;
   white-space: nowrap;
   background: transparent;
+  color: white;
   border: 0;
   overflow: hidden;
     padding: 7px 0;
@@ -90,7 +93,7 @@ a.wave-link:before {
     left: 0;
     pointer-events: none;
     fill: none;
-    stroke: #338aee;
+    stroke: white;
     stroke-width: 1px;
 }
 .link__graphic--slide {
@@ -102,4 +105,13 @@ a.wave-link:before {
 a.wave-link:hover .link__graphic--slide {
     text-decoration: none;
   transform: translate3d(-66.6%, 0, 0);
+}
+.MovDetail {
+  background-color: rgb(110, 128, 175) !important;
+  margin: 0;
+  padding: 0;
+}
+.my-3 {
+  margin: 0;
+  padding: 0;
 }

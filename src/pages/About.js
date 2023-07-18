@@ -1,38 +1,36 @@
+import { useEffect, useState } from 'react';
 import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { FBStorageContext } from '../contexts/FBStorageContext';
-import {
-    getStorage,
-    ref,
-    getDownloadURL
-  } from 'firebase/storage';
+import { getStorage, ref, getDownloadURL } from 'firebase/storage';
 
-const storage = getStorage();
+import '../styles/About.css';
 
-getDownloadURL(ref(storage, 'film_cover/MCFilmReviews.jpg'))
-  .then((url) => {
-    // url is the download URL for 'film_cover/MCFilmReviews.jpg'
-    const img = document.getElementById('myimg');
-    if (img) {
-    img.setAttribute('src', url);
-    } else {
-      console.log('img is null');
-  }})
-
-
-  
 export function About() {
-    return (
-        <Container>
-            <Col md="6">
-            <div>
-                <center><h1>About FilmReviews</h1></center>
-                <h4>Welcome to FilmReviews, a website inspired by a movie review club, Feel free to browse existing reviews or sign up to submit your own.   </h4>
-            </div>
+  const [imageUrl, setImageUrl] = useState('');
 
-            <img id="myimg" src="" alt="film cover" />
-            </Col>
-        </Container>
-    )
+  useEffect(() => {
+    const storage = getStorage();
+    const imageRef = ref(storage, 'film_cover/MCFilmReviews.png');
+
+    getDownloadURL(imageRef)
+      .then((url) => {
+        setImageUrl(url);
+      })
+      .catch((error) => {
+        console.log('Error getting image URL:', error);
+      });
+  }, []);
+
+  return (
+    <Container className='AboutCont'>
+      <Col md="6">
+        <div>
+          <center><h1>About MCFilmReviews</h1></center>
+          <h4>Welcome to MCFilmReviews, a website inspired by a movie review club. Feel free to browse existing reviews or sign up to submit your own.</h4>
+        </div>
+        <center><img id="myimg" src={imageUrl} alt="film cover" /></center>
+      </Col>
+    </Container>
+  );
 }

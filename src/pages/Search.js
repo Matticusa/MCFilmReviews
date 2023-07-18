@@ -4,6 +4,8 @@ import { getFirestore, collection, getDocs } from "firebase/firestore";
 import { firebaseConfig } from "../config/Config.js";
 import { Container, Col, Row } from "react-bootstrap";
 
+import '../styles/Search.css';
+
 // Initialize Firebase app
 initializeApp(firebaseConfig);
 
@@ -111,7 +113,7 @@ export function Search() {
   }, []);
 
   return (
-    <Container>
+    <Container className="SearchCont">
       <Col md="12">
         <h2>Search Films</h2>
         <form onSubmit={handleSubmit}>

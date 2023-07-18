@@ -29,7 +29,7 @@ export function Profile() {
           const filmReviewsCollectionRef = collection(FBDb, `films/${doc.id}/reviews`);
           const querySnapshotReviews = await getDocs(filmReviewsCollectionRef);
           const reviews = querySnapshotReviews.docs.map((reviewDoc) => reviewDoc.data());
-          const userReviewedFilm = reviews.find((review) => review.uid === user?.uid);
+          const userReviewedFilm = reviews.find((review) => review.userid === user?.uid); // Fix the comparison here
           if (userReviewedFilm) {
             reviewCount += 1;
             const film = {

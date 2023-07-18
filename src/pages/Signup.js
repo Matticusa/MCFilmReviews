@@ -110,28 +110,28 @@ export function Signup(props) {
   };
 
   const SignUpHandler = () => {
-    createUserWithEmailAndPassword(FBAuth, email, password)
-      .then((userCredential) => {
-        const user = userCredential.user;
-        
-        // Set the display name
-        updateProfile(user, {
-          displayName: userName
-        })
-          .then(() => {
-            // Log the user document data
-            AddUserName();
-            console.log("User document data:", user);
-            navigate("/");
-          })
-          .catch((error) => {
-            console.error("Error setting display name:", error);
-          });
+  createUserWithEmailAndPassword(FBAuth, email, password)
+    .then((userCredential) => {
+      const user = userCredential.user;
+
+      // Set the display name
+      updateProfile(user, {
+        displayName: userName
       })
-      .catch((error) => {
-        console.error(error.code, error.message);
-      });
-  };
+        .then(() => {
+          // Log the user document data
+          AddUserName();
+          console.log("User document data:", user);
+          navigate("/");
+        })
+        .catch((error) => {
+          console.error("Error setting display name:", error);
+        });
+    })
+    .catch((error) => {
+      console.error(error.code, error.message);
+    });
+};
 
   return (
     <Container fluid className="mt-4">

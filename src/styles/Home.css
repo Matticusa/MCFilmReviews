@@ -1,16 +1,28 @@
+body {
+    background-color: rgb(69, 82, 116) !important;
+  }
+
 .card-image {
     width: 100%;
     aspect-ratio: 3/4;
     object-fit: cover;
     object-position: center;
-}
-.film-card{
+  }
+  
+  .film-card {
     position: relative;
-}
-.card-link {
+  }
+  
+  .card-link {
     position: absolute;
     top: 0;
     bottom: 0;
     left: 0;
     right: 0;
-}
+  }
+  
+  .film-card .card-body {
+    height: 120px; /* Set your desired height here */
+    overflow: hidden;
+    background-color: rgb(110, 128, 175) !important;
+  }

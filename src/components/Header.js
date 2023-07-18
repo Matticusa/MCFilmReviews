@@ -3,9 +3,11 @@ import Container from "react-bootstrap/Container"
 import { Navigation } from "./Navigation"
 import Col from 'react-bootstrap/Col';
 
+import '../styles/Header.css'
+
 export function Header( props ) {
     return (
-        <Navbar bg="dark" variant="dark" expand="lg">
+        <Navbar bg="dark" variant="dark" expand="lg" className="Navbar">
             
             
             <Container>
