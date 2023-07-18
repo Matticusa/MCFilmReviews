@@ -22,7 +22,7 @@ body {
   }
   
   .film-card .card-body {
-    height: 120px; /* Set your desired height here */
+    height: 120px; 
     overflow: hidden;
     background-color: rgb(110, 128, 175) !important;
   }

@@ -153,10 +153,11 @@ export function Detail() {
   }
 
   return (
-    <Container>
+    <Container className='MovDetail'>
+      
       <Row className="my-3">
         <Col md="4">
-          <Image path={filmData.image} />
+          <p></p><Image path={filmData.image} />
         </Col>
         <Col md="8">
           <h1>{filmData.title}</h1>
@@ -196,21 +197,22 @@ export function Detail() {
       </Row>
       <Row>{filmReviews.map((item) => (
         <Col md="3" key={item.id}>
-          <Card>
+          <Card className='review-card'>
             <Card.Body>
               <Card.Title>
                 <h5>{item.title}</h5>
               </Card.Title>
-              <Card.Text>
-                Reviewed by: {item.username}<br />
-                {item.content}<br />
-                {item.stars} stars
+              <Card.Text className='review-content'>
+                <strong>Reviewed by: {item.username}</strong><br />                
+                <strong>{item.stars} stars</strong><br />
+                {item.content}
               </Card.Text>
             </Card.Body>
           </Card>
         </Col>
       ))}
       </Row>
+    
     </Container>
   );
 }

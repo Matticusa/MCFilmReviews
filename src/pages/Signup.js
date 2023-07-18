@@ -106,6 +106,7 @@ export function Signup(props) {
     await setDoc(doc(FBDb, "usernames", userName), {
       name: userName,
       uid: uid,
+      email: email,
     });
   };
 

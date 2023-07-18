@@ -108,10 +108,15 @@ a.wave-link:hover .link__graphic--slide {
 }
 .MovDetail {
   background-color: rgb(110, 128, 175) !important;
-  margin: 0;
-  padding: 0;
 }
 .my-3 {
-  margin: 0;
-  padding: 0;
+  margin: 10;
+  padding: 10;
+}
+.review-card .review-content{
+  height: 100px;
+}
+
+.review-content {
+  overflow-y: auto;
 }

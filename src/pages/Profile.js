@@ -6,6 +6,8 @@ import { getAuth } from 'firebase/auth';
 import Container from 'react-bootstrap/Container';
 import Col from 'react-bootstrap/Col';
 
+import '../styles/Profile.css'; 
+
 export function Profile() {
   const auth = getAuth();
   const [user] = useAuthState(auth);
@@ -61,7 +63,7 @@ export function Profile() {
   }
 
   return (
-    <Container>
+    <Container className='ProfileCont'>
       <Col md="6">
         <div>
           <h1>Welcome, {username}!</h1>
