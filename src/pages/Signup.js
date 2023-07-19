@@ -23,12 +23,13 @@ export function Signup(props) {
   const [userExists, setUserExists] = useState(false);
   const [validUserName, setValidUserName] = useState(false);
   const [userNameFeedback, setUserNameFeedback] = useState();
+  const [emailfeedback, setEmailFeedback] = useState();
 
   const FBAuth = getAuth();
   const FBDb = useContext(FBDbContext);
   const navigate = useNavigate();
 
-  const allowedChars = "abcdefghijklmnopqrstuvwxyz1234567890_-";
+  const allowedChars = "abcdefghijklmnopqrstuvwxyz1234567890_-ABCDEFGHIJKLMNOPQRSTUVWXYZ";
   let timer;
 
   const checkUser = async (user) => {
@@ -53,10 +54,14 @@ export function Signup(props) {
     let userLength = false;
     let illegalChars = [];
   
-    if (userName.length < 5) {
+    if (userName.length === 0) {
+      setUserNameFeedback(null);
+    } else if (userName.length < 5) {
       userLength = false;
+      setUserNameFeedback("Username must be 5 characters or longer");
     } else {
       userLength = true;
+      setUserNameFeedback(null);
     }
   
     const chars = Array.from(userName);
@@ -66,7 +71,9 @@ export function Signup(props) {
       }
     });
   
-    if (userLength && illegalChars.length === 0) {
+    if (illegalChars.length > 0) {
+      setUserNameFeedback("Username can only contain letters, numbers, - or _");
+    } else if (userLength) {
       clearTimeout(timer);
       timer = setTimeout(() => {
         console.log("checkUser called");
@@ -146,6 +153,20 @@ export function Signup(props) {
           >
             <h3>Sign up for an account</h3>
             <Form.Group>
+              <Form.Label>Username</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter Username"
+                onChange={(evt) => {
+                setUserName(evt.target.value);
+                console.log(evt.target.value);
+              }}
+                value={userName}/>
+              {userNameFeedback && (
+                <p className="text-danger">{userNameFeedback}</p>
+              )}
+            </Form.Group>
+            <Form.Group>
               <Form.Label>Email address</Form.Label>
               <Form.Control
                 type="email"
@@ -172,21 +193,7 @@ export function Signup(props) {
                 value={mpassword}
               />
             </Form.Group>
-            <Form.Group>
-              <Form.Label>Username</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Enter Username"
-                onChange={(evt) => {
-                setUserName(evt.target.value);
-                console.log(evt.target.value);
-              }}
-  value={userName}
-/>
-              {userNameFeedback && (
-                <p className="text-danger">{userNameFeedback}</p>
-              )}
-            </Form.Group>
+            
             <Button
               variant="primary"
               type="submit"
