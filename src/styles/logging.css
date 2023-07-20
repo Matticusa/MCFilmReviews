@@ -1,6 +1,11 @@
-.AboutCont {
+.signup-col {
     margin: 0;
     background-color: rgb(110, 128, 175) !important;
     height: 80vh;
     border-radius: 0 0 30px 30px;
+  }
+.text-danger {
+    color: #FFFFFF !important;
+    font-size: 18px !important;
 }
+ 

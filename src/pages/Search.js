@@ -197,7 +197,7 @@ export function Search() {
               </Col>
             </Row>
           ) : null}
-          <Row>
+          <Row style={{ paddingLeft: "40px" }}>
             <Col md="2">
               <div>
                 <input
@@ -221,8 +221,8 @@ export function Search() {
               </Col>
             ) : null}
           </Row>
-          <div>
-            <button type="submit">Search</button>
+          <div style={{ paddingLeft: "40px" }}>
+            <button type="submit" >Search</button>
           </div>
         </form>
 
@@ -245,6 +245,7 @@ export function Search() {
                   ? film.director.join(" and ")
                   : film.director}
               </p>
+              <p></p>
             </div>
           ))
         )}

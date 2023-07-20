@@ -212,7 +212,7 @@ export function Detail() {
         </Col>
       ))}
       </Row>
-    
+    <p> </p>
     </Container>
   );
 }

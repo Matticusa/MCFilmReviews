@@ -10,6 +10,12 @@ import { FBAuthContext } from "../contexts/FBAuthContext";
 import { FBDbContext } from "../contexts/FBDbContext";
 import { getAuth, createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
+import profilePicture from "../images/profile.jpg"
+import emailPicture from "../images/email.png"
+import passwordPicture from "../images/lock.jpg"
+import tick from "../images/greentick.jpg"
+
+import '../styles/logging.css';
 
 export function Signup(props) {
   const [email, setEmail] = useState("");
@@ -24,6 +30,8 @@ export function Signup(props) {
   const [validUserName, setValidUserName] = useState(false);
   const [userNameFeedback, setUserNameFeedback] = useState();
   const [emailfeedback, setEmailFeedback] = useState();
+  const [usedIllegalChars, setUsedIllegalChars] = useState(false)
+  const [shortUserName, setShortUserName] = useState(false)
 
   const FBAuth = getAuth();
   const FBDb = useContext(FBDbContext);
@@ -58,9 +66,11 @@ export function Signup(props) {
       setUserNameFeedback(null);
     } else if (userName.length < 5) {
       userLength = false;
+      setShortUserName(true);
       setUserNameFeedback("Username must be 5 characters or longer");
     } else {
       userLength = true;
+      setShortUserName(false);
       setUserNameFeedback(null);
     }
   
@@ -73,21 +83,21 @@ export function Signup(props) {
   
     if (illegalChars.length > 0) {
       setUserNameFeedback("Username can only contain letters, numbers, - or _");
+      setUsedIllegalChars(true);
     } else if (userLength) {
       clearTimeout(timer);
       timer = setTimeout(() => {
         console.log("checkUser called");
         checkUser(userName);
       }, 1500);
+      setUserNameFeedback(null);
+      setUsedIllegalChars(false);
     }
   }, [userName]);
 
   useEffect(() => {
-    if (email.indexOf("@") > 0) {
-      setValidEmail(true);
-    } else {
-      setValidEmail(false);
-    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    setValidEmail(emailRegex.test(email));
   }, [email]);
 
   useEffect(() => {
@@ -142,68 +152,183 @@ export function Signup(props) {
 };
 
   return (
-    <Container fluid className="mt-4">
+    <Container className="signup-col">
       <Row>
-        <Col md={{ span: 4, offset: 4 }}>
-          <Form
+      <Col className="signup-col" md={{ span: 4, offset: 4 }} rounded="md">
+          <Form noValidate
             onSubmit={(evt) => {
               evt.preventDefault();
               SignUpHandler();
             }}
-          >
+          ><p></p>
             <h3>Sign up for an account</h3>
-            <Form.Group>
-              <Form.Label>Username</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Enter Username"
-                onChange={(evt) => {
-                setUserName(evt.target.value);
-                console.log(evt.target.value);
+            <Form.Group style={{ position: "relative" }}>
+            <img
+              src={profilePicture}
+              alt="Profile"
+              style={{
+                position: "absolute",
+                left: "0px",
+                top: "50px",
+                transform: "translateY(-50%)",
+                width: "35px",
+                height: "35px",
+                borderRadius: "25%",
+                objectFit: "cover",
               }}
-                value={userName}/>
-              {userNameFeedback && (
-                <p className="text-danger">{userNameFeedback}</p>
-              )}
+            />
+            {validUserName && !shortUserName && !usedIllegalChars && (
+              <img
+              src={tick}
+              alt="Profile"
+              style={{
+                position: "absolute",
+                right: "5px", // Adjust the positioning as needed
+                top: "50px",
+                transform: "translateY(-50%)",
+                width: "20px", // Adjust the size as needed
+                height: "20px", // Adjust the size as needed
+              }}
+            />
+            )}
+            <Form.Label>Username</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="Enter Username"
+              onChange={(evt) => {
+              setUserName(evt.target.value);
+              console.log(evt.target.value);
+              }}
+              value={userName}
+              style={{ paddingLeft: "40px" }}
+            />
+            {userNameFeedback && (
+            <p style={{ color: "#FFFFFF", fontSize: "18px" }}>{userNameFeedback}</p>
+            )}
             </Form.Group>
-            <Form.Group>
-              <Form.Label>Email address</Form.Label>
-              <Form.Control
-                type="email"
-                placeholder="Valid Email Address"
-                onChange={(evt) => setEmail(evt.target.value)}
-                value={email}
-              />
+            <Form.Group style={{ position: "relative" }}>
+              <img
+                src={emailPicture}
+                alt="Profile"
+                style={{
+                position: "absolute",
+                left: "0px",
+                top: "50px",
+                transform: "translateY(-50%)",
+                width: "35px",
+                height: "35px",
+                borderRadius: "25%",
+                objectFit: "cover",
+                }}
+                />
+                {validEmail && (
+              <img
+              src={tick}
+              alt="Profile"
+              style={{
+                position: "absolute",
+                right: "5px", 
+                top: "50px",
+                transform: "translateY(-50%)",
+                width: "20px", 
+                height: "20px",
+              }}
+            />
+            )}
+            <Form.Label>Email address</Form.Label>
+            <Form.Control
+              type="email"
+              placeholder="Valid Email Address"
+              onChange={(evt) => setEmail(evt.target.value)}
+              value={email}
+              style={{ paddingLeft: "40px" }}
+            />
             </Form.Group>
-            <Form.Group>
+            <Form.Group style={{ position: "relative" }}>
+              <img
+                src={passwordPicture}
+                alt="Profile"
+                style={{
+                position: "absolute",
+                left: "0px",
+                top: "50px",
+                transform: "translateY(-50%)",
+                width: "35px",
+                height: "35px",
+                borderRadius: "25%",
+                objectFit: "cover",
+                }}
+                />
+                {validPassword && (
+              <img
+              src={tick}
+              alt="Profile"
+              style={{
+                position: "absolute",
+                right: "5px", 
+                top: "50px",
+                transform: "translateY(-50%)",
+                width: "20px", 
+                height: "20px",
+              }}
+            />
+            )}
               <Form.Label>Password</Form.Label>
               <Form.Control
                 type="password"
                 placeholder="minimum 8 characters"
                 onChange={(evt) => setPassword(evt.target.value)}
                 value={password}
+                style={{ paddingLeft: "40px" }}
               />
             </Form.Group>
-            <Form.Group>
+            <Form.Group style={{ position: "relative" }}>
+              <img
+                src={passwordPicture}
+                alt="Profile"
+                style={{
+                position: "absolute",
+                left: "0px",
+                top: "70%",
+                transform: "translateY(-50%)",
+                width: "35px",
+                height: "35px",
+                borderRadius: "25%",
+                objectFit: "cover",
+                }}
+                />
+                {matchPassword && (
+              <img
+              src={tick}
+              alt="Profile"
+              style={{
+                position: "absolute",
+                right: "5px", 
+                top: "50px",
+                transform: "translateY(-50%)",
+                width: "20px", 
+                height: "20px",
+              }}
+            />
+            )}
               <Form.Label>Confirm Password</Form.Label>
               <Form.Control
                 type="password"
                 placeholder="minimum 8 characters"
                 onChange={(evt) => setMpassword(evt.target.value)}
                 value={mpassword}
+                style={{ paddingLeft: "40px" }}
               />
             </Form.Group>
             
             <Button
-              variant="primary"
+              variant="outline-dark"
               type="submit"
               className="my-2 w-100"
               size="lg"
-              disabled={
-                !validEmail || !validPassword || !matchPassword || !validUserName
-              }
-            >
-              Sign up
+              style={{ opacity: (!validEmail || !validPassword || !matchPassword || !validUserName) ? 0.3 : 1, cursor: (!validEmail || !validPassword || !matchPassword || !validUserName) ? 'not-allowed' : 'pointer' }}
+              disabled={!validEmail || !validPassword || !matchPassword || !validUserName}>
+            Sign up
             </Button>
           </Form>
         </Col>

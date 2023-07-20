@@ -9,6 +9,10 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { FBDbContext } from "../contexts/FBDbContext";
+import profilePicture from "../images/profile.jpg"
+import passwordPicture from "../images/lock.jpg"
+
+import '../styles/logging.css';
 
 export function Signin(props) {
   const [identifier, setIdentifier] = useState("");
@@ -70,41 +74,71 @@ export function Signin(props) {
   };
 
   return (
-    <Container fluid className="mt-4">
+    <Container className="signup-col">
       <Row>
-        <Col md={{ span: 4, offset: 4 }}>
+      <Col className="signup-col" md={{ span: 4, offset: 4 }}>
           <Form
             onSubmit={(evt) => {
               evt.preventDefault();
               signInHandler();
             }}
-          >
+          ><p></p>
             <h3>Sign In to your account</h3>
-            <Form.Group>
+            <Form.Group style={{ position: "relative" }}>
+            <img
+              src={profilePicture}
+              alt="Profile"
+              style={{
+                position: "absolute",
+                left: "0px",
+                top: "50px",
+                transform: "translateY(-50%)",
+                width: "35px",
+                height: "35px",
+                borderRadius: "25%",
+                objectFit: "cover",
+              }}
+            />
               <Form.Label>Email or Username</Form.Label>
               <Form.Control
                 type="text"
                 placeholder="Email or username"
                 onChange={(evt) => setIdentifier(evt.target.value)}
                 value={identifier}
+                style={{ paddingLeft: "40px" }}
               />
             </Form.Group>
-            <Form.Group>
+            <Form.Group style={{ position: "relative" }}>
+            <img
+                src={passwordPicture}
+                alt="Profile"
+                style={{
+                position: "absolute",
+                left: "0px",
+                top: "50px",
+                transform: "translateY(-50%)",
+                width: "35px",
+                height: "35px",
+                borderRadius: "25%",
+                objectFit: "cover",
+                }}
+                />
               <Form.Label>Password</Form.Label>
               <Form.Control
                 type="password"
                 placeholder="minimum 8 characters"
                 onChange={(evt) => setPassword(evt.target.value)}
                 value={password}
+                style={{ paddingLeft: "40px" }}
               />
             </Form.Group>
             <Button
-              variant="primary"
+              variant="outline-dark"
               type="submit"
               className="my-2 w-100"
               size="lg"
-              disabled={!validIdentifier || !validPassword}
-            >
+              style={{ opacity: (!validIdentifier || !validPassword) ? 0.3 : 1, cursor: (!validIdentifier || !validPassword) ? 'not-allowed' : 'pointer' }}
+              disabled={!validIdentifier || !validPassword}>
               Sign in
             </Button>
           </Form>
