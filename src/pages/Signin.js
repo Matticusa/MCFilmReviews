@@ -93,7 +93,7 @@ export function Signin(props) {
               style={{
                 position: "absolute",
                 left: "0px",
-                top: "50px",
+                top: "52px",
                 transform: "translateY(-50%)",
                 width: "35px",
                 height: "35px",
@@ -107,17 +107,20 @@ export function Signin(props) {
                 placeholder="Email or username"
                 onChange={(evt) => setIdentifier(evt.target.value)}
                 value={identifier}
-                style={{ paddingLeft: "40px" }}
+                style={{
+                  paddingLeft: "40px",
+                  border: "3px solid #ccc" // Default border color (gray)
+                }}
               />
             </Form.Group>
             <Form.Group style={{ position: "relative" }}>
             <img
                 src={passwordPicture}
-                alt="Profile"
+                alt="Password"
                 style={{
                 position: "absolute",
                 left: "0px",
-                top: "50px",
+                top: "52px",
                 transform: "translateY(-50%)",
                 width: "35px",
                 height: "35px",
@@ -128,10 +131,13 @@ export function Signin(props) {
               <Form.Label>Password</Form.Label>
               <Form.Control
                 type="password"
-                placeholder="minimum 8 characters"
+                placeholder="Minimum 8 characters"
                 onChange={(evt) => setPassword(evt.target.value)}
                 value={password}
-                style={{ paddingLeft: "40px" }}
+                style={{
+                  paddingLeft: "40px",
+                  border: "3px solid #ccc" // Default border color (gray)
+                }}
               />
             </Form.Group>
             <Button

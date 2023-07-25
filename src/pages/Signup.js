@@ -102,12 +102,7 @@ export function Signup(props) {
 
   useEffect(() => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const isValidEmail = emailRegex.test(email) && email.length > 2;
-
-    console.log("Email:", email);
-  console.log("Length:", email.length);
-  console.log("Valid Email:", isValidEmail);
-
+    const isValidEmail = emailRegex.test(email) && email.length > 4;
   
     if (email.length < 5) {
       setEmailFeedback("");
@@ -326,7 +321,7 @@ export function Signup(props) {
               <Form.Label>Password</Form.Label>
               <Form.Control
                 type="password"
-                placeholder="minimum 8 characters"
+                placeholder="Minimum 8 characters"
                 onChange={(evt) => setPassword(evt.target.value)}
                 value={password}
                 style={{
@@ -374,7 +369,7 @@ export function Signup(props) {
               <Form.Label>Confirm Password</Form.Label>
               <Form.Control
                 type="password"
-                placeholder="minimum 8 characters"
+                placeholder="Minimum 8 characters"
                 onChange={(evt) => setMpassword(evt.target.value)}
                 value={mpassword}
                 style={{
