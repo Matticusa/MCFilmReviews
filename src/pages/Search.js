@@ -39,7 +39,7 @@ export function Search() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    setSearchPerformed(true); // Set searchPerformed to true when search is performed
+    setSearchPerformed(true); // Set search Performed to true when search is performed
     fetchFilms();
   };
 
@@ -52,12 +52,13 @@ export function Search() {
 
     let filteredFilms = filmsData;
 
+    // search by film title
     if (searchType === "title") {
       filteredFilms = filmsData.filter((film) => {
         return film.title.toLowerCase().includes(searchValue.toLowerCase());
       });
     }
-
+    // search by name of director
     if (searchType === "director") {
       filteredFilms = filmsData.filter((film) => {
         const directors = Array.isArray(film.director)
@@ -66,7 +67,7 @@ export function Search() {
         return directors.some((d) => d.includes(searchValue.toLowerCase()));
       });
     }
-
+    // search by year film was released
     if (searchType === "year") {
       if (searchOption === "exact") {
         filteredFilms = filmsData.filter((film) => {
@@ -80,7 +81,7 @@ export function Search() {
         });
       }
     }
-
+    // search by length of film
     if (searchType === "time") {
       if (searchOption === "exact") {
         filteredFilms = filmsData.filter((film) => {
@@ -118,7 +119,7 @@ export function Search() {
         <h2>Search Films</h2>
         <form onSubmit={handleSubmit}>
           <Row>
-          <Col md="3">
+          <Col  sm="6" md="5" lg="4" xl="3">
               
                 <label>
                 <h5><input
@@ -131,7 +132,7 @@ export function Search() {
                   <p><i>Search for all or part of the title - search is not case-sensitive.</i></p>
                 </label>
               </Col>
-              <Col md="3">
+              <Col  sm="6" md="6" lg="5" xl="3">
                 <label>
                   <h5><input
                     type="radio"
@@ -145,7 +146,7 @@ export function Search() {
               </Col>
             </Row>
             <Row>
-              <Col md="3">
+              <Col sm="6" md="5" lg="4" xl="3">
                 <label>
                   <h5><input
                     type="radio"
@@ -157,7 +158,7 @@ export function Search() {
                   <p><i>Search for an exact year or select "between" to search between years</i></p>
                 </label>
               </Col>
-              <Col md="3">
+              <Col sm="6" md="6" lg="5" xl="3">
                 <label>
                   <h5><input
                     type="radio"
@@ -173,7 +174,7 @@ export function Search() {
           </Row>
           {searchType === "year" || searchType === "time" ? (
             <Row>
-              <Col md="2">
+              <Col xs="6" sm="5" md="4" lg="3" xl="2">
                 <label>
                   <input
                     type="radio"
@@ -184,7 +185,7 @@ export function Search() {
                   Exact
                 </label>
                 </Col>
-                <Col md="2">
+                <Col xs="6" sm="5" md="4" lg="3" xl="2">
                 <label>
                   <input
                     type="radio"
@@ -198,7 +199,7 @@ export function Search() {
             </Row>
           ) : null}
           <Row style={{ paddingLeft: "40px" }}>
-            <Col md="2">
+            <Col xs="6" sm="5" md="4" lg="3" xl="2">
               <div>
                 <input
                   type="text"
@@ -209,7 +210,7 @@ export function Search() {
               </div>
             </Col>
             {searchOption === "between" ? (
-              <Col md="2">
+              <Col xs="6" sm="5" md="4" lg="3" xl="2">
                 <div>
                   <input
                     type="text"

@@ -8,4 +8,16 @@
     color: #FFFFFF !important;
     font-size: 18px !important;
 }
- 
+.custom-border {
+  border: 2px solid #ccc;
+}
+
+/* Red border color for invalid email */
+.custom-border.invalid {
+  border: 2px solid red;
+}
+
+/* Green border color for valid email */
+.custom-border.valid {
+  border: 2px solid darkgreen;
+}

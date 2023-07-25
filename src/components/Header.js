@@ -2,18 +2,23 @@ import Navbar from "react-bootstrap/Navbar"
 import Container from "react-bootstrap/Container"
 import { Navigation } from "./Navigation"
 import Col from 'react-bootstrap/Col';
-
+import filmImage from "../images/film.png"
 import '../styles/Header.css'
 
 export function Header( props ) {
     return (
-        <Navbar bg="dark" variant="dark" expand="lg" className="Navbar">
-            
-            
+        <Navbar bg="dark" variant="dark" expand="lg" className="Navbar">            
             <Container>
-                
-                <Navbar.Brand>
-                    <h2>MCFilmReviews:</h2>
+                <Navbar.Brand className="d-flex">
+                <img
+                        src={filmImage}
+                        alt="Film Icon"
+                        width="35"
+                        height="35"
+                        className="d-inline-block align-top"
+                    />
+                <h2 className="mb-0 flex-grow-1">
+                    MCFilmReviews:</h2>
                 </Navbar.Brand>
                 <Navbar.Toggle aria-controls="main-nav" />
                 <Navbar.Collapse id="main-nav">

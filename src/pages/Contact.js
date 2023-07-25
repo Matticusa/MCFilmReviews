@@ -11,7 +11,7 @@ export function Contact() {
       <Col md="6" className="d-flex align-items-center">
         <div>
           <center><h1>Contact MCFilmReviews</h1></center>
-          <h4>We can be contacted at the following email address: mcfilmreviews@rocketship.com</h4>
+          <h5>We can be contacted at the following email address: mcfilmreviews@rocketship.com</h5>
         </div>
       </Col>
     </Container>

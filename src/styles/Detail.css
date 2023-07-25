@@ -21,15 +21,7 @@ html {
 body {
   margin: 0;
   padding: 0;
-  
-  
-  place-content: center;
-  grid-template-columns: repeat(3, max-content);
-  gap: 1rem;
-  
   background: var(--bg-color);
-  
-
 }
 
 a {
@@ -106,10 +98,24 @@ a.wave-link:hover .link__graphic--slide {
     text-decoration: none;
   transform: translate3d(-66.6%, 0, 0);
 }
-.MovDetail {
+.main-container {
+  display: grid;
+  place-content: center;
+  grid-template-columns: repeat(3, max-content);
+  gap: 1rem;
+  padding: 0px;
+}
+
+.FilmDetail {
   background-color: rgb(110, 128, 175) !important;
-  margin: 10;
-  padding: 10;
+  margin: 10px;
+  padding: 10px;
+  margin-bottom: 10px;
+  padding-bottom: 20px;
+  border-radius: 0 0 30px 30px;
+}
+.review-row {
+  padding-bottom: 20px;
 }
 .my-3 {
   margin: 10;
@@ -119,6 +125,7 @@ a.wave-link:hover .link__graphic--slide {
   height: 100px;
   margin: 10;
   padding: 10;
+  margin-bottom: 30;
 }
 
 .review-content {

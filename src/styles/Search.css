@@ -1,4 +1,6 @@
 .SearchCont {
     background-color: rgb(110, 128, 175) !important;
+    padding-bottom: 20px;
     border-radius: 0 0 30px 30px;
+    margin-bottom: 20px;
 }

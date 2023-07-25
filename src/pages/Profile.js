@@ -14,7 +14,7 @@ export function Profile() {
   const [username, setUsername] = useState('');
   const [reviewCount, setReviewCount] = useState(0);
   const [reviewedFilms, setReviewedFilms] = useState([]);
-  const [loading, setLoading] = useState(true); // Add loading state
+  const [loading, setLoading] = useState(true); 
   const FBDb = useContext(FBDbContext);
 
   useEffect(() => {
@@ -64,7 +64,7 @@ export function Profile() {
 
   return (
     <Container className='ProfileCont'>
-      <Col md="6">
+      <Col xs="12" sm="8" md="6">
         <div>
           <h1>Welcome, {username}!</h1>
           <p>You have reviewed {reviewCount} films.</p>

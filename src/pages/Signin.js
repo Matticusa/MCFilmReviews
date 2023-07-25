@@ -19,6 +19,7 @@ export function Signin(props) {
   const [password, setPassword] = useState("");
   const [validIdentifier, setValidIdentifier] = useState(false);
   const [validPassword, setValidPassword] = useState(false);
+  const [authError, setAuthError] = useState("");
 
   const FBAuth = useContext(FBAuthContext);
   const FBDb = useContext(FBDbContext);
@@ -42,6 +43,7 @@ export function Signin(props) {
 
   const signInHandler = async () => {
     try {
+      setAuthError("");
       if (identifier.includes("@")) {
         // Email sign-in
         const authCredential = await signInWithEmailAndPassword(FBAuth, identifier, password);
@@ -63,20 +65,20 @@ export function Signin(props) {
           navigate("/");
         } else {
           // User with the entered username not found
-          // Handle error or display appropriate message to the user
+          setAuthError("User credentials incorrect...");
         }
       }
     } catch (error) {
       const errorCode = error.code;
       const errorMessage = error.message;
-      // Handle error
+      setAuthError("User credentials incorrect...");
     }
   };
 
   return (
     <Container className="signup-col">
       <Row>
-      <Col className="signup-col" md={{ span: 4, offset: 4 }}>
+        <Col className="signup-col" md={{ span: 4, offset: 4 }}>
           <Form
             onSubmit={(evt) => {
               evt.preventDefault();
@@ -142,6 +144,9 @@ export function Signin(props) {
               Sign in
             </Button>
           </Form>
+          {authError && (
+            <p style={{ color: "white", fontSize: "20px" }}><center>{authError}</center></p>
+          )}
         </Col>
       </Row>
     </Container>

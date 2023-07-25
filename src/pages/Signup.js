@@ -29,7 +29,9 @@ export function Signup(props) {
   const [userExists, setUserExists] = useState(false);
   const [validUserName, setValidUserName] = useState(false);
   const [userNameFeedback, setUserNameFeedback] = useState();
-  const [emailfeedback, setEmailFeedback] = useState();
+  const [emailFeedback, setEmailFeedback] = useState();
+  const [passwordFeedback, setPasswordFeedback] = useState();
+  const [mpasswordFeedback, setMpasswordFeedback] = useState();
   const [usedIllegalChars, setUsedIllegalChars] = useState(false)
   const [shortUserName, setShortUserName] = useState(false)
 
@@ -39,16 +41,18 @@ export function Signup(props) {
 
   const allowedChars = "abcdefghijklmnopqrstuvwxyz1234567890_-ABCDEFGHIJKLMNOPQRSTUVWXYZ";
   let timer;
-
+// function to check Firebase if user already exists
   const checkUser = async (user) => {
     try {
       const ref = doc(FBDb, "usernames", user);
       const docSnap = await getDoc(ref);
       console.log("Firebase Firestore query executed");
       if (docSnap.exists()) {
+        //user already exists
         setUserNameFeedback("Username is already taken");
         setValidUserName(false);
       } else {
+        //user doesn't exist
         setUserNameFeedback(null);
         setValidUserName(true);
       }
@@ -61,35 +65,36 @@ export function Signup(props) {
   useEffect(() => {
     let userLength = false;
     let illegalChars = [];
-  
+    // check if the username is of a certain length
     if (userName.length === 0) {
       setUserNameFeedback(null);
+      setValidUserName(false); // Set to false when the username is empty
     } else if (userName.length < 5) {
       userLength = false;
       setShortUserName(true);
       setUserNameFeedback("Username must be 5 characters or longer");
+      setValidUserName(false); // Set to false when the username is too short
     } else {
       userLength = true;
       setShortUserName(false);
       setUserNameFeedback(null);
+      setValidUserName(true); // Set to true when the username is long enough
     }
-  
+    // check if username is made of allowedChars
     const chars = Array.from(userName);
     chars.forEach((chr) => {
       if (!allowedChars.includes(chr)) {
         illegalChars.push(chr);
       }
     });
-  
+    // check if username does not exist in Firebase if the other two checks are true
     if (illegalChars.length > 0) {
       setUserNameFeedback("Username can only contain letters, numbers, - or _");
       setUsedIllegalChars(true);
+      setValidUserName(false); // Set to false when the username contains illegal characters
     } else if (userLength) {
       clearTimeout(timer);
-      timer = setTimeout(() => {
-        console.log("checkUser called");
-        checkUser(userName);
-      }, 1500);
+      timer = setTimeout(() => { checkUser(userName) }, 1500);
       setUserNameFeedback(null);
       setUsedIllegalChars(false);
     }
@@ -97,29 +102,55 @@ export function Signup(props) {
 
   useEffect(() => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    setValidEmail(emailRegex.test(email));
+    const isValidEmail = emailRegex.test(email) && email.length > 2;
+
+    console.log("Email:", email);
+  console.log("Length:", email.length);
+  console.log("Valid Email:", isValidEmail);
+
+  
+    if (email.length < 5) {
+      setEmailFeedback("");
+    } else if (isValidEmail) {
+      setValidEmail(true);
+      setEmailFeedback(""); // Clear any previous error message
+    } else {
+      setValidEmail(false);
+      setEmailFeedback("Invalid email address");
+    }
   }, [email]);
 
   useEffect(() => {
-    if (password.length >= 8) {
+    if (password.length === 0) {
+      setPasswordFeedback("")
+    }
+    else if (password.length >= 8) {
       setValidPassword(true);
+      setPasswordFeedback("")
     } else {
       setValidPassword(false);
+      setPasswordFeedback("Password must be at least 8 characters")
     }
   }, [password]);
 
   useEffect(() => {
-    if (password && password === mpassword) {
+    if (mpassword.length === 0 && password.length < 8) {
+      setMpasswordFeedback("");
+    } else if (password && password === mpassword) {
       setMatchPassword(true);
-    } else {
+      setMpasswordFeedback("");
+    } else if (mpassword.length > 0 && password.length >= 8) {
       setMatchPassword(false);
+      setMpasswordFeedback("Passwords do not match");
+    } else {
+      setMpasswordFeedback("");
     }
   }, [password, mpassword]);
 
   const AddUserName = async () => {
     const user = FBAuth.currentUser;
     const uid = user.uid;
-  
+    // store username, uid and email in FBDb
     await setDoc(doc(FBDb, "usernames", userName), {
       name: userName,
       uid: uid,
@@ -154,7 +185,9 @@ export function Signup(props) {
   return (
     <Container className="signup-col">
       <Row>
-      <Col className="signup-col" md={{ span: 4, offset: 4 }} rounded="md">
+      <Col className="signup-col" md={{ span: 6, offset: 3 }} lg={{ span: 6, offset: 3}} xl={{ span: 4, offset: 4 }} rounded="md">
+      <div style={{ height: "calc(100vh - 200px)", overflowY: "auto" }}>
+        <row>
           <Form noValidate
             onSubmit={(evt) => {
               evt.preventDefault();
@@ -169,25 +202,25 @@ export function Signup(props) {
               style={{
                 position: "absolute",
                 left: "0px",
-                top: "50px",
+                top: "52px",
                 transform: "translateY(-50%)",
                 width: "35px",
                 height: "35px",
                 borderRadius: "25%",
                 objectFit: "cover",
               }}
-            />
+            />            
             {validUserName && !shortUserName && !usedIllegalChars && (
               <img
               src={tick}
-              alt="Profile"
+              alt="Tick"
               style={{
                 position: "absolute",
-                right: "5px", // Adjust the positioning as needed
+                right: "5px", 
                 top: "50px",
                 transform: "translateY(-50%)",
-                width: "20px", // Adjust the size as needed
-                height: "20px", // Adjust the size as needed
+                width: "20px", 
+                height: "20px", 
               }}
             />
             )}
@@ -200,7 +233,14 @@ export function Signup(props) {
               console.log(evt.target.value);
               }}
               value={userName}
-              style={{ paddingLeft: "40px" }}
+              style={{
+                paddingLeft: "40px",
+                border: userName.length > 0
+                  ? validUserName && !shortUserName && !usedIllegalChars
+                  ? "3px solid darkgreen" // Green border when the username is valid
+                  : "3px solid darkred" // Red border when the username is invalid
+                  : "3px solid #ccc" // Default border color (gray)
+              }}
             />
             {userNameFeedback && (
             <p style={{ color: "#FFFFFF", fontSize: "18px" }}>{userNameFeedback}</p>
@@ -209,11 +249,11 @@ export function Signup(props) {
             <Form.Group style={{ position: "relative" }}>
               <img
                 src={emailPicture}
-                alt="Profile"
+                alt="Email"
                 style={{
                 position: "absolute",
                 left: "0px",
-                top: "50px",
+                top: "52px",
                 transform: "translateY(-50%)",
                 width: "35px",
                 height: "35px",
@@ -224,7 +264,7 @@ export function Signup(props) {
                 {validEmail && (
               <img
               src={tick}
-              alt="Profile"
+              alt="Tick"
               style={{
                 position: "absolute",
                 right: "5px", 
@@ -241,17 +281,27 @@ export function Signup(props) {
               placeholder="Valid Email Address"
               onChange={(evt) => setEmail(evt.target.value)}
               value={email}
-              style={{ paddingLeft: "40px" }}
+              style={{
+                paddingLeft: "40px",
+                border: email.length > 2
+                ? validEmail
+                ? "3px solid darkgreen" // Green border when email is valid
+                : "3px solid darkred" // Red border when email is invalid
+                : "3px solid #ccc" // Default border color (gray)
+              }}
             />
+            {emailFeedback && (
+            <p style={{ color: "#FFFFFF", fontSize: "18px" }}>{emailFeedback}</p>
+            )}
             </Form.Group>
             <Form.Group style={{ position: "relative" }}>
               <img
                 src={passwordPicture}
-                alt="Profile"
+                alt="Password"
                 style={{
                 position: "absolute",
                 left: "0px",
-                top: "50px",
+                top: "52px",
                 transform: "translateY(-50%)",
                 width: "35px",
                 height: "35px",
@@ -262,7 +312,7 @@ export function Signup(props) {
                 {validPassword && (
               <img
               src={tick}
-              alt="Profile"
+              alt="Tick"
               style={{
                 position: "absolute",
                 right: "5px", 
@@ -279,17 +329,27 @@ export function Signup(props) {
                 placeholder="minimum 8 characters"
                 onChange={(evt) => setPassword(evt.target.value)}
                 value={password}
-                style={{ paddingLeft: "40px" }}
+                style={{
+                  paddingLeft: "40px",
+                  border: password.length > 0
+                  ? validPassword
+                  ? "3px solid darkgreen" // Green border when email is valid
+                  : "3px solid darkred" // Red border when email is invalid
+                  : "3px solid #ccc" // Default border color (gray)
+                }}
               />
+              {passwordFeedback && (
+            <p style={{ color: "#FFFFFF", fontSize: "18px" }}>{passwordFeedback}</p>
+            )}
             </Form.Group>
             <Form.Group style={{ position: "relative" }}>
               <img
                 src={passwordPicture}
-                alt="Profile"
+                alt="Password"
                 style={{
                 position: "absolute",
                 left: "0px",
-                top: "70%",
+                top: "52px",
                 transform: "translateY(-50%)",
                 width: "35px",
                 height: "35px",
@@ -300,7 +360,7 @@ export function Signup(props) {
                 {matchPassword && (
               <img
               src={tick}
-              alt="Profile"
+              alt="Tick"
               style={{
                 position: "absolute",
                 right: "5px", 
@@ -317,8 +377,18 @@ export function Signup(props) {
                 placeholder="minimum 8 characters"
                 onChange={(evt) => setMpassword(evt.target.value)}
                 value={mpassword}
-                style={{ paddingLeft: "40px" }}
+                style={{
+                  paddingLeft: "40px",
+                  border: mpassword.length > 0
+                  ? matchPassword
+                  ? "3px solid darkgreen" // Green border when email is valid
+                  : "3px solid darkred" // Red border when email is invalid
+                  : "3px solid #ccc" // Default border color (gray)
+                }}
               />
+              {mpasswordFeedback && (
+            <p style={{ color: "#FFFFFF", fontSize: "18px" }}>{mpasswordFeedback}</p>
+            )}
             </Form.Group>
             
             <Button
@@ -331,6 +401,8 @@ export function Signup(props) {
             Sign up
             </Button>
           </Form>
+          </row>
+          </div>
         </Col>
       </Row>
     </Container>

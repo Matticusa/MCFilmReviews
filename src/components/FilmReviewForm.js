@@ -5,7 +5,7 @@ import { useState } from 'react';
 
 import ReactStars from 'react-stars';
 
-export function ReviewForm(props) {
+export function FilmReviewForm({ filmId, user, reviewed, handleSubmitReview }) {
   const [stars, setStars] = useState(5);
   const [submitted, setSubmitted] = useState(false);
 
@@ -22,7 +22,7 @@ export function ReviewForm(props) {
   
     console.log('stars:', reviewStars); // Check if the correct star rating value is logged
   
-    props.handler({
+    handleSubmitReview({
       title: reviewTitle,
       content: reviewBody,
       stars: Number(reviewStars),
@@ -31,15 +31,15 @@ export function ReviewForm(props) {
     });
   };
 
-  const SubmitAlert = (props) => {
-    if (props.show) {
+  const SubmitAlert = () => {
+    if (submitted) {
       return <Alert variant="success">Thanks for your review</Alert>;
     } else {
       return null;
     }
   };
 
-  if (props.user && props.reviewed === false) {
+  if (user && reviewed === false) { 
     return (
       <Form onSubmit={submitHandler}>
         <h4>Add a review for this film</h4>
@@ -49,35 +49,34 @@ export function ReviewForm(props) {
         </Form.Group>
         {/* stars rating */}
         <Form.Group>
-          <Form.Label>You've given this film {stars} stars out of 5</Form.Label>
-            <ReactStars
-              count={5}
-              value={stars}
-              onChange={(newStars) => {
-                console.log('newStars:', newStars); // Check the value of newStars
-                setStars(newStars);
-              }}
-              size={48}
-              color1="#CCCCCC"
-              color2="#FFD700"
-              half={true}
-            />
+          <Form.Label>You've given this film <b>{stars}</b> stars out of <b>5</b></Form.Label>
+          <ReactStars
+            count={5}
+            value={stars}
+            onChange={(newStars) => {
+              console.log('newStars:', newStars); // Check the value of newStars
+              setStars(newStars);
+            }}
+            size={48}
+            color1="#CCCCCC"
+            color2="#FFD700"
+            half={true}
+          />
         </Form.Group>
         {/* stars rating */}
         <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
           <Form.Label>Review Body</Form.Label>
           <Form.Control as="textarea" rows={3} name="body" placeholder="I love this film" />
         </Form.Group>
-        <Form.Control type="hidden" name="uid" value={props.user.uid} />
+        <Form.Control type="hidden" name="uid" value={user.uid} /> {/* Update this line */}
         <Form.Control
           type="hidden"
           name="username"
-          value={props.user.displayName || 'Unknown User'}
+          value={user.displayName || 'Unknown User'} // Update this line
         /> {/* Include the username in the form data */}
-        <Button type="submit" variant="primary" disabled={submitted ? true : false}>
+        <Button type="submit" variant="dark" disabled={submitted ? true : false}>
           Add Review
         </Button>
-        <p></p>
         <SubmitAlert show={submitted} />
       </Form>
     );

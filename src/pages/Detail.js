@@ -8,7 +8,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Card from 'react-bootstrap/Card';
 import Alert from 'react-bootstrap/Alert';
-import Form from 'react-bootstrap/Form';
+import { FilmReviewForm } from '../components/FilmReviewForm';
 
 import { FBDbContext } from '../contexts/FBDbContext';
 import { FBStorageContext } from '../contexts/FBStorageContext';
@@ -21,7 +21,7 @@ export function Detail() {
   const [filmData, setFilmData] = useState();
   const [auth, setAuth] = useState();
   const [filmReviews, setFilmReviews] = useState([]);
-  const [reviewed, setReviewed] = useState(false);
+  const [userReviewed, setUserReviewed] = useState(false);
   const [averageStars, setAverageStars] = useState(0);
   const [loading, setLoading] = useState(true);
 
@@ -33,7 +33,8 @@ export function Detail() {
     if (user) {
       // user is signed in
       setAuth(user);
-    } else {
+    } 
+    else {
       // user is not signed in
       setAuth(null);
     }
@@ -42,67 +43,44 @@ export function Detail() {
   const getReviews = async () => {
     const path = `films/${filmId}/reviews`;
     const querySnapshot = await getDocs(collection(FBDb, path));
-    const reviews = [];
-    let userReviewed = false;
+    let reviews = [];
     querySnapshot.forEach((item) => {
-      const review = item.data();
+      let review = item.data();
       review.id = item.id;
       reviews.push(review);
       if (review.userid === auth?.uid) {
-        userReviewed = true;
+        setUserReviewed(true);
       }
     });
     setFilmReviews(reviews);
-    setReviewed(userReviewed);
   };
 
-  const ReviewForm = () => {
-    const [stars, setStars] = useState(5);
-    const [submitted, setSubmitted] = useState(false);
+  const ReviewCollection = filmReviews.map((item) => (
+    <Col xs="6" sm="6" md="4" lg="3" key={item.id}>
+      <Card className='review-card'>
+        <Card.Body>
+          <Card.Title>
+            <h5>{item.title}</h5>
+          </Card.Title>
+          <Card.Text className='review-content'>
+            <strong>Reviewed by: {item.username}</strong><br />
+            <strong>{item.stars} stars</strong><br />
+            <p>{item.content}</p>
+            
+          </Card.Text>
+        </Card.Body>
+      </Card>
+    </Col>
+  ));
 
-    const submitHandler = (event) => {
-      event.preventDefault();
-      setSubmitted(true);
-      const data = new FormData(event.target);
-      const reviewTitle = data.get('title');
-      const reviewBody = data.get('body');
-      const reviewStars = parseFloat(data.get('stars')) || stars;
-
-      const reviewUserId = data.get('uid');
-      const reviewUsername = data.get('username');
-
-      const review = {
-        title: reviewTitle,
-        content: reviewBody,
-        stars: Number(reviewStars),
-        userid: reviewUserId,
-        username: reviewUsername,
-      };
-
-      addDoc(collection(FBDb, `films/${filmId}/reviews`), review).then(() => {
-        getReviews();
-      });
-    };
-
-    const SubmitAlert = (props) => {
-      if (props.show) {
-        return <Alert variant="success">Thanks for your review</Alert>;
-      } else {
-        return null;
-      }
-    };
-
-    if (auth && !reviewed) {
-      return (
-        <Form onSubmit={submitHandler}>
-          <h4>Add a review for this film</h4>
-          {/* Review form contents */}
-          <SubmitAlert show={submitted} />
-        </Form>
-      );
-    } else {
-      return null;
-    }
+  // function to handle review submission
+  const handleSubmitReview = async (reviewData) => {
+    // create a document inside firestore
+    const path = `films/${filmId}/reviews`;
+    const review = await addDoc(collection(FBDb, path), reviewData);
+    // when the user submits a new review, refresh the reviews
+    getReviews();
+    localStorage.setItem('userReviewed', 'true')
   };
 
   const Image = (props) => {
@@ -153,25 +131,28 @@ export function Detail() {
   }
 
   return (
-    <Container className='MovDetail'>
+    <div className='main-container'>
+    <Container className="FilmDetail">
       
       <Row className="my-3">
-        <Col md="4">
-          <p></p><Image path={filmData.image} />
+        <Col sm="12" md="4">
+          <Image path={filmData.image} />
         </Col>
-        <Col md="8">
+        <Col sm="9" md="8">
           <h1>{filmData.title}</h1>
-          <p>Average user review score: {averageStars.toFixed(1)} ({filmReviews.length} reviews)</p>
+          <p>
+            Average user review score: {averageStars.toFixed(1)} ({filmReviews.length} reviews)
+          </p>
           <h4>Directed by {filmData.director}</h4>
           <h5>{filmData.year} - {filmData.genre}</h5>
           <p>{filmData.summary}</p>
           <h5>Produced by {filmData.producer}</h5>
           <h5>Starring {filmData.actors}</h5>
-          <Row className="my-3">
-            <div className="col-1">
-              <h6>IMDB:</h6>
+          <Row className="my-3 align-items-center">
+            <div className="col-xl-1 col-lg-1 col-md-2 col-sm-2 col-xs-1">
+              <h6 style={{ marginBottom: '0', lineHeight: '1' }}>IMDB:</h6>
             </div>
-            <div className="col-5">
+            <div className="col-xl-5 col-lg-7 col-md-9 col-sm-10 col-xs-10">
               <a href={filmData.imdb} className="wave-link">
                 &nbsp; {filmData.imdb}
                 <svg
@@ -190,29 +171,17 @@ export function Detail() {
           <h5>{filmData.time} minutes</h5>
         </Col>
       </Row>
-      <Row>
+      <Row className='review-row'>
         <Col md="6">
-          <ReviewForm />
+          {/* Render the ReviewForm based on conditions */}
+          {auth !== null && !userReviewed && (
+            <FilmReviewForm filmId={filmId} user={auth} reviewed={userReviewed} handleSubmitReview={handleSubmitReview} />
+          )}
         </Col>
       </Row>
-      <Row>{filmReviews.map((item) => (
-        <Col md="3" key={item.id}>
-          <Card className='review-card'>
-            <Card.Body>
-              <Card.Title>
-                <h5>{item.title}</h5>
-              </Card.Title>
-              <Card.Text className='review-content'>
-                <strong>Reviewed by: {item.username}</strong><br />                
-                <strong>{item.stars} stars</strong><br />
-                {item.content}
-              </Card.Text>
-            </Card.Body>
-          </Card>
-        </Col>
-      ))}
-      </Row>
-    <p> </p>
+      <Row className="g-4" style={{ marginBottom: '20px' }}>{ReviewCollection}</Row>
+      
     </Container>
+    </div>
   );
 }

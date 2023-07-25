@@ -18,21 +18,24 @@ const storage = getStorage();
 
 export function Home() {
   const [data, setData] = useState([]);
-
   const FBDb = useContext(FBDbContext);
   const FBStorage = useContext(FBStorageContext);
 
   const getData = async () => {
+    // get data from firestore collection called "films"
     const querySnapshot = await getDocs(collection(FBDb, "films"));
+    // an array to store all the films from firestore
     let films = [];
     querySnapshot.forEach((doc) => {
       let film = doc.data();
       film.id = doc.id;
+      // add the film to the array
       films.push(film);
     });
+    // set the films array as the data state
     setData(films);
   };
-
+  
   useEffect(() => {
     if (data.length === 0) {
       getData();
@@ -47,9 +50,12 @@ export function Home() {
     return <Card.Img variant="top" src={imgPath} className="card-image" />;
   };
 
+  
+
+  // Setup columns with breakpoints to display cards properly on different size displays
   const Columns = data.map((film, key) => {
     return (
-      <Col md="2" key={key} className="my-3">
+      <Col sm="6" md="4" lg="3" xl="2" key={key} className="my-3">
         <Card className="film-card">
           <Image path={film.image} />
           <Card.Body>
