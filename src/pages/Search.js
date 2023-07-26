@@ -18,6 +18,8 @@ export function Search() {
   const [isSearching, setIsSearching] = useState(false);
   const [isFetched, setIsFetched] = useState(false);
   const [searchPerformed, setSearchPerformed] = useState(false); // Track if search has been performed
+  const [isFormReady, setIsFormReady] = useState(false); // Track if the form is ready to be submitted
+
 
   const handleSearchTypeChange = (event) => {
     setSearchType(event.target.value);
@@ -127,9 +129,16 @@ export function Search() {
                     value="title"
                     checked={searchType === "title"}
                     onChange={handleSearchTypeChange}
+                    className="custom-radio"
+                    style={{
+                      marginRight: "5px",
+                      marginTop: "0px",
+                      appearance: "none", // Disable the default OS styles for radio buttons
+                    }}
                   />
                   Search by Title</h5>
                   <p><i>Search for all or part of the title - search is not case-sensitive.</i></p>
+
                 </label>
               </Col>
               <Col  sm="6" md="6" lg="5" xl="3">
@@ -139,6 +148,12 @@ export function Search() {
                     value="director"
                     checked={searchType === "director"}
                     onChange={handleSearchTypeChange}
+                    className="custom-radio"
+                    style={{
+                      marginRight: "5px",
+                      marginTop: "0px",
+                      appearance: "none", // Disable the default OS styles for radio buttons
+                    }}
                   />
                   Search by Director</h5>
                   <p><i>Search by first, last or full Name - search is not case-sensitive.</i></p>
@@ -153,6 +168,12 @@ export function Search() {
                     value="year"
                     checked={searchType === "year"}
                     onChange={handleSearchTypeChange}
+                    className="custom-radio"
+                    style={{
+                      marginRight: "5px",
+                      marginTop: "0px",
+                      appearance: "none", // Disable the default OS styles for radio buttons
+                    }}
                   />
                   Search by Year</h5>
                   <p><i>Search for an exact year or select "between" to search between years</i></p>
@@ -165,6 +186,12 @@ export function Search() {
                     value="time"
                     checked={searchType === "time"}
                     onChange={handleSearchTypeChange}
+                    className="custom-radio"
+                    style={{
+                      marginRight: "5px",
+                      marginTop: "0px",
+                      appearance: "none", // Disable the default OS styles for radio buttons
+                    }}
                   />
                   Search by Length</h5>
                   <p><i>Search an exact Runtime or select "between" to search between two values (minutes)</i></p>
@@ -181,6 +208,12 @@ export function Search() {
                     value="exact"
                     checked={searchOption === "exact"}
                     onChange={handleSearchOptionChange}
+                    className="custom-radio"
+                    style={{
+                      marginRight: "5px",
+                      marginTop: "0px",
+                      appearance: "none", // Disable the default OS styles for radio buttons
+                    }}
                   />
                   Exact
                 </label>
@@ -192,6 +225,12 @@ export function Search() {
                     value="between"
                     checked={searchOption === "between"}
                     onChange={handleSearchOptionChange}
+                    className="custom-radio"
+                    style={{
+                      marginRight: "5px",
+                      marginTop: "0px",
+                      appearance: "none", // Disable the default OS styles for radio buttons
+                    }}
                   />
                   Between
                 </label>
