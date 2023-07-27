@@ -131,14 +131,16 @@ export function Detail() {
   }
 
   return (
-    <div className='main-container'>
+    
+
+    <div className="main-container d-flex justify-content-center align-items-center">
     <Container className="FilmDetail">
       
       <Row className="my-3">
-        <Col sm="12" md="4">
+        <Col xs={12} md={4}>
           <Image path={filmData.image} />
         </Col>
-        <Col sm="9" md="8">
+        <Col xs={12} md={8}>
           <h1>{filmData.title}</h1>
           <p>
             Average user review score: {averageStars.toFixed(1)} ({filmReviews.length} reviews)
@@ -149,22 +151,22 @@ export function Detail() {
           <h5>Produced by {filmData.producer}</h5>
           <h5>Starring {filmData.actors}</h5>
           <Row className="my-3 align-items-center">
-            <div className="col-xl-1 col-lg-1 col-md-2 col-sm-2 col-xs-1">
+            <div className="col-xl-1 col-lg-1 col-md-2 col-sm-2 col-1">
               <h6 style={{ marginBottom: '0', lineHeight: '1' }}>IMDB:</h6>
             </div>
-            <div className="col-xl-5 col-lg-7 col-md-9 col-sm-10 col-xs-10">
+            <div className="col-xl-5 col-lg-7 col-md-9 col-sm-10 col-10">
               <a href={filmData.imdb} className="wave-link">
-                &nbsp; {filmData.imdb}
-                <svg
-                  className="link__graphic link__graphic--slide"
-                  width="300%"
-                  height="100%"
-                  viewBox="0 0 1200 60"
-                  preserveAspectRatio="none"
-                >
-                  <path d="M0,56.5c0,0,298.666,0,399.333,0C448.336,56.5,513.994,46,597,46c77.327,0,135,10.5,200.999,10.5c95.996,0,402.001,0,402.001,0"></path>
-                </svg>
-              </a>
+              &nbsp; {filmData.imdb}
+              <svg
+                className="link__graphic link__graphic--slide"
+                width="300%"
+                height="100%"
+                viewBox="0 0 1200 60"
+                preserveAspectRatio="none"
+              >
+              <path d="M0,56.5c0,0,298.666,0,399.333,0C448.336,56.5,513.994,46,597,46c77.327,0,135,10.5,200.999,10.5c95.996,0,402.001,0,402.001,0"></path>
+              </svg>
+            </a>
             </div>
           </Row>
           <h5>Rated {filmData.classification}</h5>
@@ -183,5 +185,6 @@ export function Detail() {
       
     </Container>
     </div>
+    
   );
 }

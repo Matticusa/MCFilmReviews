@@ -11,14 +11,24 @@ export function Header( props ) {
             <Container>
                 <Navbar.Brand className="d-flex">
                 <img
-                        src={filmImage}
-                        alt="Film Icon"
-                        width="35"
-                        height="35"
-                        className="d-inline-block align-top"
-                    />
-                <h2 className="mb-0 flex-grow-1">
-                    MCFilmReviews:</h2>
+                    src={filmImage}
+                    alt="Film Icon"
+                    width="35"
+                    height="35"
+                    className="d-inline-block align-top"
+                    style={{
+                        marginRight: "3px",
+                        marginTop: "0px",
+                      }}
+                />
+                <h2 
+                    className="mb-0 flex-grow-1"
+                    style={{
+                        marginRight: "20px",
+                        marginTop: "0px",
+                      }}
+                    >
+                    MCFilmReviews</h2>
                 </Navbar.Brand>
                 <Navbar.Toggle aria-controls="main-nav" />
                 <Navbar.Collapse id="main-nav">

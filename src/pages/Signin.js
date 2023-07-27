@@ -103,6 +103,7 @@ export function Signin(props) {
             />
               <Form.Label>Email or Username</Form.Label>
               <Form.Control
+                className="grey-placeholder"
                 type="text"
                 placeholder="Email or username"
                 onChange={(evt) => setIdentifier(evt.target.value)}
@@ -130,6 +131,7 @@ export function Signin(props) {
                 />
               <Form.Label>Password</Form.Label>
               <Form.Control
+                className="grey-placeholder"
                 type="password"
                 placeholder="Minimum 8 characters"
                 onChange={(evt) => setPassword(evt.target.value)}

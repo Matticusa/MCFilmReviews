@@ -21,3 +21,7 @@
 .custom-border.valid {
   border: 2px solid darkgreen;
 }
+
+.grey-placeholder::placeholder {
+  color: #9F9F9F !important;
+}

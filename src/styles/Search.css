@@ -12,7 +12,7 @@ input[type="radio"] {
   }
   
   /* Add custom styles for the radio button */
-  input[type="radio"].custom-radio {
+input[type="radio"].custom-radio {
     width: 14px;
     height: 14px;
     border-radius: 50%;
@@ -22,7 +22,7 @@ input[type="radio"] {
   }
   
   /* Add custom styles for the dot (when checked) */
-  input[type="radio"].custom-radio:checked::before {
+input[type="radio"].custom-radio:checked::before {
     content: "";
     position: absolute;
     top: 2px;
@@ -31,4 +31,9 @@ input[type="radio"] {
     height: 6px;
     border-radius: 50%;
     background-color: rgb(69, 82, 116);
+  }
+
+  /* On mouse-over, add a grey background color */
+input[type="radio"].custom-radio:hover {
+    background-color: #ccc;
   }

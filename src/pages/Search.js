@@ -3,8 +3,10 @@ import { initializeApp } from "firebase/app";
 import { getFirestore, collection, getDocs } from "firebase/firestore";
 import { firebaseConfig } from "../config/Config.js";
 import { Container, Col, Row } from "react-bootstrap";
+import Button from "react-bootstrap/Button";
 
 import '../styles/Search.css';
+import '../styles/ReviewForm.css'
 
 // Initialize Firebase app
 initializeApp(firebaseConfig);
@@ -19,6 +21,7 @@ export function Search() {
   const [isFetched, setIsFetched] = useState(false);
   const [searchPerformed, setSearchPerformed] = useState(false); // Track if search has been performed
   const [isFormReady, setIsFormReady] = useState(false); // Track if the form is ready to be submitted
+  const [searchFeedback, setSearchFeedback] = useState();
 
 
   const handleSearchTypeChange = (event) => {
@@ -29,6 +32,7 @@ export function Search() {
 
   const handleSearchValueChange = (event) => {
     setSearchValue(event.target.value);
+    setIsFormReady(event.target.value.trim() !== "" || searchValue2.trim() !== "");
   };
 
   const handleSearchOptionChange = (event) => {
@@ -37,11 +41,21 @@ export function Search() {
 
   const handleSearchValue2Change = (event) => {
     setSearchValue2(event.target.value);
+    setIsFormReady(event.target.value.trim() !== "" || searchValue2.trim() !== "");
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
+
+    // Check if the form is ready to be submitted (both search fields are not empty)
+    if (!isFormReady) {
+      // If the form is not ready, display the feedback message and return
+      setSearchFeedback("Please enter more information to perform the search...");
+      return;
+    }
+
     setSearchPerformed(true); // Set search Performed to true when search is performed
+    setSearchFeedback(""); // Clear the feedback message when the search is performed
     fetchFilms();
   };
 
@@ -237,21 +251,24 @@ export function Search() {
               </Col>
             </Row>
           ) : null}
-          <Row style={{ paddingLeft: "40px" }}>
-            <Col xs="6" sm="5" md="4" lg="3" xl="2">
+          <Row>
+            <Col xs="5" sm="5" md="4" lg="3" xl="2">
               <div>
                 <input
+                  className="search-placeholder"
                   type="text"
                   value={searchValue}
                   onChange={handleSearchValueChange}
                   placeholder={`Enter ${searchType}...`}
+                  
                 />
               </div>
             </Col>
             {searchOption === "between" ? (
-              <Col xs="6" sm="5" md="4" lg="3" xl="2">
+              <Col xs="5" sm="5" md="4" lg="3" xl="2">
                 <div>
                   <input
+                    className="search-placeholder"
                     type="text"
                     value={searchValue2}
                     onChange={handleSearchValue2Change}
@@ -261,11 +278,27 @@ export function Search() {
               </Col>
             ) : null}
           </Row>
-          <div style={{ paddingLeft: "40px" }}>
-            <button type="submit" >Search</button>
+          <Col xs="5" sm="5" md="4" lg="3" xl="2">
+          <div style={{ paddingLeft: "40px"  }}>
+          <Button
+              variant="outline-dark"
+              type="submit"
+              className="my-2 w-100"
+              size="lg"
+              style={{ width: "200px" }}
+            >
+              Search
+            </Button>
           </div>
+          </Col>
+          
         </form>
 
+        <div>
+          {searchFeedback && (
+            <p style={{ color: "#FFFFFF", fontSize: "18px" }}>{searchFeedback}</p>
+            )}
+        </div>      
         {isFetched && searchPerformed && !isSearching && films.length === 0 && (
           <p>No films found.</p>
         )}

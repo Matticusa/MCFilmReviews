@@ -98,13 +98,7 @@ a.wave-link:hover .link__graphic--slide {
     text-decoration: none;
   transform: translate3d(-66.6%, 0, 0);
 }
-.main-container {
-  display: grid;
-  place-content: center;
-  grid-template-columns: repeat(3, max-content);
-  gap: 1rem;
-  padding: 0px;
-}
+
 
 .FilmDetail {
   background-color: rgb(110, 128, 175) !important;
@@ -122,12 +116,20 @@ a.wave-link:hover .link__graphic--slide {
   padding: 10;
 }
 .review-card .review-content{
-  height: 100px;
-  margin: 10;
-  padding: 10;
-  margin-bottom: 30;
+  min-height: 150px;
+  max-height: 150px;
+  margin: 10px;
+  padding: 10px;
 }
 
 .review-content {
   overflow-y: auto;
+}
+
+.review-card .card-title {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  height: 40px;
+  margin-bottom: 10px;
 }

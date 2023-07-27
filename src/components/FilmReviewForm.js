@@ -5,6 +5,8 @@ import { useState } from 'react';
 
 import ReactStars from 'react-stars';
 
+import '../styles/ReviewForm.css';
+
 export function FilmReviewForm({ filmId, user, reviewed, handleSubmitReview }) {
   const [stars, setStars] = useState(5);
   const [submitted, setSubmitted] = useState(false);
@@ -45,7 +47,13 @@ export function FilmReviewForm({ filmId, user, reviewed, handleSubmitReview }) {
         <h4>Add a review for this film</h4>
         <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
           <Form.Label>Review Title</Form.Label>
-          <Form.Control type="text" placeholder="This film is amazing" name="title" />
+          <Form.Control 
+            type="text" 
+            placeholder="This film is amazing" 
+            name="title" 
+            className="grey-placeholder"
+            maxLength={40}
+          />
         </Form.Group>
         {/* stars rating */}
         <Form.Group>
@@ -66,7 +74,13 @@ export function FilmReviewForm({ filmId, user, reviewed, handleSubmitReview }) {
         {/* stars rating */}
         <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
           <Form.Label>Review Body</Form.Label>
-          <Form.Control as="textarea" rows={3} name="body" placeholder="I love this film" />
+          <Form.Control 
+            as="textarea" 
+            rows={3} 
+            name="body" 
+            placeholder="I love this film" 
+            className="grey-placeholder"
+          />
         </Form.Group>
         <Form.Control type="hidden" name="uid" value={user.uid} /> {/* Update this line */}
         <Form.Control

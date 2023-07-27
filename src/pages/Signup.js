@@ -221,6 +221,7 @@ export function Signup(props) {
             )}
             <Form.Label>Username</Form.Label>
             <Form.Control
+              className="grey-placeholder"
               type="text"
               placeholder="Enter Username"
               onChange={(evt) => {
@@ -272,6 +273,7 @@ export function Signup(props) {
             )}
             <Form.Label>Email address</Form.Label>
             <Form.Control
+              className="grey-placeholder"
               type="email"
               placeholder="Valid Email Address"
               onChange={(evt) => setEmail(evt.target.value)}
@@ -320,6 +322,7 @@ export function Signup(props) {
             )}
               <Form.Label>Password</Form.Label>
               <Form.Control
+                className="grey-placeholder"
                 type="password"
                 placeholder="Minimum 8 characters"
                 onChange={(evt) => setPassword(evt.target.value)}
@@ -368,6 +371,7 @@ export function Signup(props) {
             )}
               <Form.Label>Confirm Password</Form.Label>
               <Form.Control
+                className="grey-placeholder"
                 type="password"
                 placeholder="Minimum 8 characters"
                 onChange={(evt) => setMpassword(evt.target.value)}
