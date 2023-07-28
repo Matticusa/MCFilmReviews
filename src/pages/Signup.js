@@ -3,7 +3,7 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
-import { doc, getDoc, setDoc } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs, setDoc } from "firebase/firestore";
 
 import { useState, useEffect, useContext } from "react";
 import { FBAuthContext } from "../contexts/FBAuthContext";
@@ -62,6 +62,24 @@ export function Signup(props) {
     }
   };
   
+  // function to check if email exists in Firebase
+  const checkEmail = async (email) => {
+    try {
+      const querySnapshot = await getDocs(collection(FBDb, "usernames"));
+      const emailExists = querySnapshot.docs.some(
+        (doc) => doc.data().email === email
+      );
+
+      console.log("Firebase Firestore query executed");
+
+      return emailExists;
+    } catch (error) {
+      console.log("Firebase Firestore query error:", error);
+      // Handle the error and display an appropriate message to the user
+      return false;
+    }
+  };
+
   useEffect(() => {
     let userLength = false;
     let illegalChars = [];
@@ -100,16 +118,29 @@ export function Signup(props) {
     }
   }, [userName]);
 
+  
+
   useEffect(() => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const isValidEmail = emailRegex.test(email) && email.length > 4;
-  
+
     if (email.length < 5) {
+      setEmailExists(false);
       setEmailFeedback("");
     } else if (isValidEmail) {
-      setValidEmail(true);
-      setEmailFeedback(""); // Clear any previous error message
+      // Check if the email exists in Firebase
+      checkEmail(email).then((emailExists) => {
+        if (emailExists) {
+          setEmailExists(true);
+          setEmailFeedback("Email address is already in use");
+        } else {
+          setEmailExists(false);
+          setValidEmail(true);
+          setEmailFeedback(""); // Clear any previous error message
+        }
+      });
     } else {
+      setEmailExists(false);
       setValidEmail(false);
       setEmailFeedback("Invalid email address");
     }
@@ -119,22 +150,22 @@ export function Signup(props) {
     if (password.length === 0) {
       setPasswordFeedback("")
     }
-    else if (password.length >= 8) {
+    else if (password.length >= 9 && /\D/.test(password)) {
       setValidPassword(true);
       setPasswordFeedback("")
     } else {
       setValidPassword(false);
-      setPasswordFeedback("Password must be at least 8 characters")
+      setPasswordFeedback("Password must be at least 9 characters at least 1 non-numeric character")
     }
   }, [password]);
 
   useEffect(() => {
-    if (mpassword.length === 0 && password.length < 8) {
+    if (mpassword.length === 0 && password.length < 9) {
       setMpasswordFeedback("");
     } else if (password && password === mpassword) {
       setMatchPassword(true);
       setMpasswordFeedback("");
-    } else if (mpassword.length > 0 && password.length >= 8) {
+    } else if (mpassword.length > 0 && password.length >= 9) {
       setMatchPassword(false);
       setMpasswordFeedback("Passwords do not match");
     } else {
@@ -257,7 +288,7 @@ export function Signup(props) {
                 objectFit: "cover",
                 }}
                 />
-                {validEmail && (
+                {validEmail && !emailExists && (
               <img
               src={tick}
               alt="Tick"
@@ -281,7 +312,7 @@ export function Signup(props) {
               style={{
                 paddingLeft: "40px",
                 border: email.length > 2
-                ? validEmail
+                ? validEmail && !emailExists
                 ? "3px solid darkgreen" // Green border when email is valid
                 : "3px solid darkred" // Red border when email is invalid
                 : "3px solid #ccc" // Default border color (gray)
@@ -324,7 +355,7 @@ export function Signup(props) {
               <Form.Control
                 className="grey-placeholder"
                 type="password"
-                placeholder="Minimum 8 characters"
+                placeholder="Minimum 9 characters"
                 onChange={(evt) => setPassword(evt.target.value)}
                 value={password}
                 style={{
@@ -373,7 +404,7 @@ export function Signup(props) {
               <Form.Control
                 className="grey-placeholder"
                 type="password"
-                placeholder="Minimum 8 characters"
+                placeholder="Minimum 9 characters"
                 onChange={(evt) => setMpassword(evt.target.value)}
                 value={mpassword}
                 style={{
@@ -395,8 +426,9 @@ export function Signup(props) {
               type="submit"
               className="my-2 w-100"
               size="lg"
-              style={{ opacity: (!validEmail || !validPassword || !matchPassword || !validUserName) ? 0.3 : 1, cursor: (!validEmail || !validPassword || !matchPassword || !validUserName) ? 'not-allowed' : 'pointer' }}
-              disabled={!validEmail || !validPassword || !matchPassword || !validUserName}>
+              style={{ opacity: (!validEmail || !validPassword || !matchPassword || !validUserName || emailExists) ? 0.3 : 1, 
+              cursor: (!validEmail || !validPassword || !matchPassword || !validUserName || emailExists) ? 'not-allowed' : 'pointer' }}
+              disabled={!validEmail || !validPassword || !matchPassword || !validUserName || emailExists}>
             Sign up
             </Button>
           </Form>

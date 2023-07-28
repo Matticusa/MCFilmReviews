@@ -60,6 +60,11 @@ export function Home() {
           <Image path={film.image} />
           <Card.Body>
             <Card.Title>{film.title}</Card.Title>
+            <Card.Text>
+              <div className="genre-bottom">
+              <strong>{film.genre}</strong>
+              </div>
+          </Card.Text>
           </Card.Body>
           <a href={"/detail/" + film.id} className="card-link"></a>
         </Card>

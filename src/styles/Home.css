@@ -23,7 +23,18 @@ body {
   }
   
   .film-card .card-body {
-    height: 120px; 
+    height: 154px; 
     overflow: hidden;
     background-color: rgb(110, 128, 175) !important;
+  }
+
+  .genre-bottom {
+    font-size: x-small;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 8px;
+    color: white;
   }

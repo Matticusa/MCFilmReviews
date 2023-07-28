@@ -151,10 +151,10 @@ export function Detail() {
           <h5>Produced by {filmData.producer}</h5>
           <h5>Starring {filmData.actors}</h5>
           <Row className="my-3 align-items-center">
-            <div className="col-xl-1 col-lg-1 col-md-2 col-sm-2 col-1">
+            <div style={{ width: "50px" }}>
               <h6 style={{ marginBottom: '0', lineHeight: '1' }}>IMDB:</h6>
             </div>
-            <div className="col-xl-5 col-lg-7 col-md-9 col-sm-10 col-10">
+            <div style={{ width: "360px" }}>
               <a href={filmData.imdb} className="wave-link">
               &nbsp; {filmData.imdb}
               <svg
